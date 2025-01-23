@@ -1,0 +1,117 @@
+# Import necessary libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Set the aesthetic style of the plots
+sns.set(style="whitegrid")
+
+# Task 1: Load and Explore the Dataset
+
+# Load the dataset (Iris dataset)
+url = "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data"
+columns = ["sepal_length", "sepal_width", "petal_length", "petal_width", "species"]
+try:
+    iris_data = pd.read_csv(url, names=columns)
+except FileNotFoundError:
+    print("File not found. Please check the URL or file path.")
+
+# Display the first few rows of the dataset
+print("First few rows of the dataset:")
+print(iris_data.head())
+
+# Explore the structure of the dataset
+print("\nDataset info:")
+print(iris_data.info())
+
+# Checking for missing values
+print("\nMissing values:")
+print(iris_data.isnull().sum())
+
+# Since there are no missing values, we can proceed with analysis
+
+# Task 2: Basic Data Analysis
+
+# Compute basic statistics
+print("\nBasic statistics of the numerical columns:")
+print(iris_data.describe())
+
+# Perform grouping on species and compute the mean of petal length
+mean_petal_length = iris_data.groupby("species")["petal_length"].mean()
+print("\nMean petal length for each species:")
+print(mean_petal_length)
+
+# Task 3: Data Visualization
+
+# 1. Line chart showing trends over time (using an index as a proxy for time)
+plt.figure(figsize=(10, 5))
+plt.plot(iris_data.index, iris_data['sepal_length'], marker='o', linestyle='-')
+plt.title('Sepal Length Trend')
+plt.xlabel('Index')
+plt.ylabel('Sepal Length (cm)')
+plt.grid()
+plt.show()
+
+# 2. Bar chart showing average petal length per species
+plt.figure(figsize=(10, 5))
+mean_petal_length.plot(kind='bar', color='skyblue')
+plt.title('Average Petal Length per Species')
+plt.xlabel('Species')
+plt.ylabel('Average Petal Length (cm)')
+plt.xticks(rotation=45)
+plt.show()
+
+# 3. Histogram of the petal lengths
+plt.figure(figsize=(10, 5))
+plt.hist(iris_data['petal_length'], bins=10, color='lightgreen', edgecolor='black')
+plt.title('Distribution of Petal Lengths')
+plt.xlabel('Petal Length (cm)')
+plt.ylabel('Frequency')
+plt.grid()
+plt.show()
+
+# 4. Scatter plot to visualize the relationship between sepal length and petal length
+plt.figure(figsize=(10, 5))
+sns.scatterplot(data=iris_data, x='sepal_length', y='petal_length', hue='species', style='species', palette='deep')
+plt.title('Sepal Length vs Petal Length')
+plt.xlabel('Sepal Length (cm)')
+plt.ylabel('Petal Length (cm)')
+plt.legend(title='Species')
+plt.grid()
+plt.show()
+
+# Findings and Observations
+Here are some findings and observations based on the analysis and visualizations of the Iris dataset:
+
+### Findings and Observations
+
+1. **Basic Statistics**:
+   - The **average sepal length** across all species is approximately 5.84 cm, with a standard deviation of about 0.83 cm, indicating some variation in sepal lengths.
+   - The **average petal length** is around 3.76 cm, with a standard deviation of 1.76 cm, suggesting significant differences in petal lengths among the species.
+
+2. **Mean Petal Length by Species**:
+   - The mean petal lengths for the three species are as follows:
+     - **Iris-setosa**: 1.46 cm (smallest mean petal length)
+     - **Iris-versicolor**: 4.26 cm
+     - **Iris-virginica**: 5.55 cm (largest mean petal length)
+   - This suggests that **Iris-setosa** has distinctly shorter petals compared to the other two species, while **Iris-virginica** exhibits the longest petals. This characteristic can be helpful for classification tasks.
+
+3. **Trend in Sepal Length**:
+   - The line chart shows a general upward trend in sepal length as we move through the dataset. However, it does not indicate a clear time-series trend but rather reflects the order of the dataset entries.
+   - The variation in sepal length is relatively consistent, with no extreme outliers identified.
+
+4. **Bar Chart of Average Petal Length**:
+   - The bar chart visually emphasizes the differences in average petal lengths among the species, clearly showing that **Iris-virginica** has the longest average petal length, while **Iris-setosa** has the shortest.
+   - This can help in quickly identifying species based on petal length characteristics.
+
+5. **Distribution of Petal Lengths**:
+   - The histogram indicates that petal lengths are not uniformly distributed; instead, they show a right-skewed distribution, particularly for **Iris-virginica**.
+   - The majority of petal lengths are concentrated around 1 to 5 cm, with a notable peak around the 1.0-1.5 cm range, reflecting the characteristics of the **Iris-setosa** species.
+
+6. **Scatter Plot Analysis**:
+   - The scatter plot illustrates a positive correlation between sepal length and petal length. As sepal length increases, petal length also tends to increase, especially for **Iris-virginica**.
+   - The three species show different clusters in the scatter plot, with **Iris-setosa** clearly separated from the others, indicating that it has distinct morphological characteristics.
+   - **Iris-versicolor** and **Iris-virginica** overlap somewhat but can still be differentiated based on their sepal and petal lengths.
+
+### Conclusion
+The analysis and visualizations indicate that petal length is a strong distinguishing feature among the species in the Iris dataset. The clear differences in sepal and petal lengths among the species can be useful for classification and identification purposes. Understanding these characteristics can aid in botanical studies and machine learning classification tasks.
